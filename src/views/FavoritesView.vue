@@ -1,10 +1,12 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFavoriteStore } from '../stores/favoriteStore';
+import GenreFilter from '../components/GenreFilter.vue';
 
 const router = useRouter();
 const favoriteStore = useFavoriteStore();
+const selectedGenreId = ref('');
 
 onMounted(async () => {
   await favoriteStore.fetchFavorites();
@@ -17,11 +19,18 @@ const viewMovieDetails = (movieId) => {
 const removeFromFavorites = async (movieId) => {
   await favoriteStore.removeFromFavorites(movieId);
 };
+
+const handleGenreFilter = async (genreId) => {
+  selectedGenreId.value = genreId;
+  await favoriteStore.fetchFavorites(genreId ? { genre_id: genreId } : {});
+};
 </script>
 
 <template>
   <div class="favorites-page">
     <h1>Meus Filmes Favoritos</h1>
+    
+    <GenreFilter @filter="handleGenreFilter" />
     
     <div v-if="favoriteStore.loading" class="loading">
       <p>Carregando favoritos...</p>
