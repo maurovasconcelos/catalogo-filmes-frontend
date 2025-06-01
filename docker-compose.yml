@@ -1,0 +1,20 @@
+services:
+  frontend:
+    container_name: catalogo-filmes-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - VITE_TMDB_API_KEY=${VITE_TMDB_API_KEY}
+      - VITE_TMDB_API_URL=${VITE_TMDB_API_URL}
+    networks:
+      - catalogo-filmes-network
+
+networks:
+  catalogo-filmes-network:
