@@ -245,7 +245,7 @@ const getTrailerUrl = () => {
 
 <style scoped>
 .movie-details {
-  min-height: 100vh;
+  padding-bottom: 40px;
 }
 
 .loading, .error {
@@ -256,32 +256,26 @@ const getTrailerUrl = () => {
 .retry-btn, .back-btn {
   margin-top: 20px;
   padding: 10px 20px;
-  background: #0066cc;
+  background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
+}
+
+.retry-btn:hover, .back-btn:hover {
+  background-color: #2563eb;
 }
 
 .backdrop {
   background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  min-height: 500px;
+  background-position: center;
+  position: relative;
 }
 
 .backdrop-overlay {
   background: rgba(0, 0, 0, 0.7);
-  min-height: 500px;
   padding: 40px 0;
-  color: white;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 .movie-header {
@@ -296,7 +290,7 @@ const getTrailerUrl = () => {
 .poster {
   width: 100%;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .no-poster {
@@ -305,24 +299,25 @@ const getTrailerUrl = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #333;
+  background: #2d3748;
+  color: #a0aec0;
   border-radius: 8px;
-  color: #999;
 }
 
 .movie-header-info {
   flex: 1;
+  color: white;
 }
 
 .movie-header-info h1 {
   font-size: 2.5rem;
-  margin: 0 0 10px;
+  margin-bottom: 10px;
 }
 
 .release-date {
   font-size: 1.1rem;
   margin-bottom: 15px;
-  opacity: 0.8;
+  color: #a0aec0;
 }
 
 .genres {
@@ -333,8 +328,9 @@ const getTrailerUrl = () => {
 }
 
 .genre-tag {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 5px 12px;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  padding: 5px 10px;
   border-radius: 20px;
   font-size: 0.9rem;
 }
@@ -342,17 +338,17 @@ const getTrailerUrl = () => {
 .meta-info {
   display: flex;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 1.1rem;
 }
 
 .rating-value {
-  font-weight: bold;
-  margin-right: 5px;
+  color: #fbbf24;
 }
 
 .rating-count {
-  opacity: 0.7;
+  color: #a0aec0;
+  font-size: 0.9rem;
 }
 
 .actions {
@@ -360,94 +356,117 @@ const getTrailerUrl = () => {
 }
 
 .favorite-btn {
-  padding: 12px 24px;
-  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: #2d3748;
+  color: white;
   border: none;
   border-radius: 4px;
-  background: #f0f0f0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s;
 }
 
 .favorite-btn:hover {
-  background: #e0e0e0;
+  background-color: #4a5568;
 }
 
 .favorite-btn.is-favorite {
-  background: #ff6b6b;
-  color: white;
+  background-color: #3b82f6;
 }
 
 .favorite-btn.is-favorite:hover {
-  background: #ff5252;
+  background-color: #2563eb;
 }
 
 .content-section {
-  padding: 40px 0;
+  margin-top: 30px;
 }
 
 .tabs {
   display: flex;
   gap: 10px;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #4a5568;
   padding-bottom: 10px;
 }
 
 .tabs button {
-  padding: 10px 20px;
   background: none;
   border: none;
-  font-size: 1.1rem;
+  color: #a0aec0;
+  font-size: 1rem;
+  padding: 8px 16px;
   cursor: pointer;
-  color: #666;
-  transition: all 0.2s ease;
+  border-radius: 4px;
+  transition: all 0.3s;
 }
 
 .tabs button:hover {
-  color: #0066cc;
+  background-color: #2d3748;
+  color: #e2e8f0;
 }
 
 .tabs button.active {
-  color: #0066cc;
-  font-weight: bold;
-  border-bottom: 3px solid #0066cc;
+  background-color: #3b82f6;
+  color: white;
 }
 
 .tab-content {
-  min-height: 300px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.overview-tab h2, .cast-tab h2, .videos-tab h2 {
-  margin-top: 0;
+.overview {
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.tagline {
+  font-style: italic;
+  color: #a0aec0;
   margin-bottom: 20px;
-  font-size: 1.5rem;
-  color: #333;
 }
 
-.overview-tab p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.additional-info {
+.info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  gap: 20px;
 }
 
-.info-item h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  color: #666;
+.info-item {
+  margin-bottom: 15px;
 }
 
-.info-item p {
-  font-size: 1.2rem;
-  margin: 0;
+.info-label {
+  font-weight: bold;
+  color: #a0aec0;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  color: #e2e8f0;
+}
+
+.trailer-container {
+  margin-top: 20px;
+}
+
+.trailer-frame {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.no-trailer {
+  text-align: center;
+  padding: 40px;
+  background-color: #2d3748;
+  border-radius: 8px;
+  color: #a0aec0;
 }
 
 .cast-grid {
@@ -457,66 +476,41 @@ const getTrailerUrl = () => {
 }
 
 .cast-card {
-  background: #fff;
+  background-color: #2d3748;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.cast-image {
-  height: 225px;
-  overflow: hidden;
-}
-
-.cast-image img {
+.cast-photo {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 2/3;
   object-fit: cover;
 }
 
-.no-image {
-  height: 100%;
+.no-photo {
+  width: 100%;
+  aspect-ratio: 2/3;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #999;
+  background-color: #4a5568;
+  color: #a0aec0;
 }
 
 .cast-info {
   padding: 10px;
 }
 
-.cast-info h4 {
-  margin: 0 0 5px;
-  font-size: 1rem;
+.cast-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #e2e8f0;
 }
 
-.cast-info p {
-  margin: 0;
+.cast-character {
   font-size: 0.9rem;
-  color: #666;
-}
-
-.trailer-container {
-  position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
-  overflow: hidden;
-  max-width: 100%;
-}
-
-.trailer-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.no-data {
-  color: #666;
-  font-style: italic;
+  color: #a0aec0;
 }
 
 @media (max-width: 768px) {
@@ -525,8 +519,9 @@ const getTrailerUrl = () => {
   }
   
   .poster-container {
+    flex: 0 0 auto;
     max-width: 250px;
-    margin: 0 auto 30px;
+    margin: 0 auto;
   }
   
   .movie-header-info h1 {
@@ -534,13 +529,18 @@ const getTrailerUrl = () => {
     text-align: center;
   }
   
-  .release-date, .genres, .meta-info {
-    justify-content: center;
+  .release-date, .genres {
     text-align: center;
+    justify-content: center;
+  }
+  
+  .meta-info {
+    justify-content: center;
   }
   
   .actions {
-    text-align: center;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

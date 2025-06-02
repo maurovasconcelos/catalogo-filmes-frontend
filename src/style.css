@@ -6,13 +6,13 @@
 
 body {
     font-family: "Inter", "Avenir", Helvetica, Arial, sans-serif;
-    color: #213547;
-    background-color: #f5f5f5;
+    color: #e2e8f0;
+    background-color: #121212;
     line-height: 1.6;
 }
 
 a {
-    color: #2563eb;
+    color: #60a5fa;
     text-decoration: none;
 }
 
@@ -22,7 +22,7 @@ a:hover {
 
 button {
     cursor: pointer;
-    background-color: #2563eb;
+    background-color: #3b82f6;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -32,19 +32,19 @@ button {
 }
 
 button:hover {
-    background-color: #1d4ed8;
+    background-color: #2563eb;
 }
 
 button:disabled {
-    background-color: #93c5fd;
+    background-color: #475569;
     cursor: not-allowed;
 }
 
 /* Classes de utilidade */
 .card {
-    background-color: white;
+    background-color: #1e1e1e;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
 }
@@ -65,4 +65,25 @@ button:disabled {
 
 .mb-4 {
     margin-bottom: 1rem;
+}
+
+/* Estilos para inputs */
+input, select, textarea {
+    background-color: #2d3748;
+    border: 1px solid #4a5568;
+    color: #e2e8f0;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Estilos para links ativos */
+.router-link-active {
+    color: #60a5fa;
+    font-weight: 500;
 }

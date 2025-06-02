@@ -150,26 +150,28 @@ const goToPage = (page) => {
 h1 {
   margin-bottom: 30px;
   text-align: center;
-  color: #333;
+  color: #e2e8f0;
 }
 
 .search-container {
   max-width: 600px;
-  margin: 0 auto 40px;
+  margin: 0 auto 30px;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px;
   font-size: 1.1rem;
-  border: 2px solid #ddd;
-  border-radius: 30px;
-  outline: none;
-  transition: border-color 0.3s ease;
+  border: 1px solid #4a5568;
+  border-radius: 8px;
+  background-color: #2d3748;
+  color: #e2e8f0;
 }
 
 .search-input:focus {
-  border-color: #0066cc;
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
 .loading, .error, .empty {
@@ -181,14 +183,13 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
-  margin-bottom: 30px;
 }
 
 .movie-card {
-  background: #fff;
+  background: #1e1e1e;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
 
@@ -218,8 +219,8 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #999;
+  background: #2d3748;
+  color: #a0aec0;
 }
 
 .movie-info {
@@ -230,10 +231,7 @@ h1 {
   margin: 0 0 10px;
   font-size: 1.1rem;
   cursor: pointer;
-}
-
-.movie-info h3:hover {
-  color: #0066cc;
+  color: #e2e8f0;
 }
 
 .movie-meta {
@@ -241,7 +239,7 @@ h1 {
   justify-content: space-between;
   margin-bottom: 15px;
   font-size: 0.9rem;
-  color: #666;
+  color: #a0aec0;
 }
 
 .favorite-btn {
@@ -249,38 +247,39 @@ h1 {
   padding: 8px;
   border: none;
   border-radius: 4px;
-  background: #f0f0f0;
+  background-color: #2d3748;
+  color: #e2e8f0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s;
 }
 
 .favorite-btn:hover {
-  background: #e0e0e0;
+  background-color: #4a5568;
 }
 
 .favorite-btn.is-favorite {
-  background: #ff6b6b;
-  color: white;
+  background-color: #3b82f6;
 }
 
 .favorite-btn.is-favorite:hover {
-  background: #ff5252;
+  background-color: #2563eb;
 }
 
-/* Estilos para paginação */
+/* Paginação */
 .pagination {
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
 }
 
 .pagination-info {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  color: #666;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 15px;
+  color: #a0aec0;
 }
 
 .pagination-controls {
@@ -290,20 +289,20 @@ h1 {
 
 .pagination-btn {
   padding: 8px 16px;
-  background-color: #0066cc;
-  color: white;
+  background-color: #2d3748;
+  color: #e2e8f0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s;
 }
 
-.pagination-btn:hover {
-  background-color: #0055aa;
+.pagination-btn:hover:not(:disabled) {
+  background-color: #4a5568;
 }
 
 .pagination-btn:disabled {
-  background-color: #cccccc;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 </style>

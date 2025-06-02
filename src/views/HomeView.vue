@@ -86,7 +86,7 @@ const toggleFavorite = async (movie) => {
 h1 {
   margin-bottom: 30px;
   text-align: center;
-  color: #333;
+  color: #e2e8f0;
 }
 
 .loading, .error, .empty {
@@ -101,10 +101,10 @@ h1 {
 }
 
 .movie-card {
-  background: #fff;
+  background: #1e1e1e;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
 
@@ -134,8 +134,8 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #999;
+  background: #2d3748;
+  color: #a0aec0;
 }
 
 .movie-info {
@@ -146,10 +146,7 @@ h1 {
   margin: 0 0 10px;
   font-size: 1.1rem;
   cursor: pointer;
-}
-
-.movie-info h3:hover {
-  color: #0066cc;
+  color: #e2e8f0;
 }
 
 .movie-meta {
@@ -157,7 +154,7 @@ h1 {
   justify-content: space-between;
   margin-bottom: 15px;
   font-size: 0.9rem;
-  color: #666;
+  color: #a0aec0;
 }
 
 .favorite-btn {
@@ -165,21 +162,21 @@ h1 {
   padding: 8px;
   border: none;
   border-radius: 4px;
-  background: #f0f0f0;
+  background-color: #2d3748;
+  color: #e2e8f0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s;
 }
 
 .favorite-btn:hover {
-  background: #e0e0e0;
+  background-color: #4a5568;
 }
 
 .favorite-btn.is-favorite {
-  background: #ff6b6b;
-  color: white;
+  background-color: #3b82f6;
 }
 
 .favorite-btn.is-favorite:hover {
-  background: #ff5252;
+  background-color: #2563eb;
 }
 </style>

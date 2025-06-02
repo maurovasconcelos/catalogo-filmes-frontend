@@ -33,7 +33,7 @@
 }
 
 header {
-    background-color: #1a1a2e;
+    background-color: #0f172a;
     color: white;
     padding: 1rem 0;
 }
@@ -66,7 +66,7 @@ nav .container {
 
 .nav-links a:hover,
 .nav-links a.router-link-active {
-    background-color: #16213e;
+    background-color: #1e293b;
 }
 
 main {
@@ -75,7 +75,7 @@ main {
 }
 
 footer {
-    background-color: #1a1a2e;
+    background-color: #0f172a;
     color: white;
     text-align: center;
     padding: 1rem 0;

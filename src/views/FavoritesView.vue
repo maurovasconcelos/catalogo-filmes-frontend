@@ -88,7 +88,7 @@ const handleGenreFilter = async (genreId) => {
 h1 {
   margin-bottom: 30px;
   text-align: center;
-  color: #333;
+  color: #e2e8f0;
 }
 
 .loading, .error, .empty {
@@ -99,7 +99,7 @@ h1 {
 .action-btn {
   margin-top: 15px;
   padding: 10px 20px;
-  background-color: #0066cc;
+  background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 4px;
@@ -108,7 +108,7 @@ h1 {
 }
 
 .action-btn:hover {
-  background-color: #0052a3;
+  background-color: #2563eb;
 }
 
 .movie-grid {
@@ -119,10 +119,10 @@ h1 {
 }
 
 .movie-card {
-  background-color: white;
+  background-color: #1e1e1e;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
 
@@ -152,9 +152,8 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
-  color: #666;
-  font-style: italic;
+  background: #2d3748;
+  color: #a0aec0;
 }
 
 .movie-info {
@@ -163,35 +162,32 @@ h1 {
 
 .movie-info h3 {
   margin: 0 0 10px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
-}
-
-.movie-info h3:hover {
-  color: #0066cc;
+  color: #e2e8f0;
 }
 
 .movie-meta {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  color: #666;
   font-size: 0.9rem;
+  color: #a0aec0;
 }
 
 .remove-btn {
   width: 100%;
   padding: 8px;
-  background-color: #f44336;
-  color: white;
   border: none;
   border-radius: 4px;
+  background-color: #e53e3e;
+  color: white;
   cursor: pointer;
+  transition: background-color 0.3s;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
 }
 
 .remove-btn:hover {
-  background-color: #d32f2f;
+  background-color: #c53030;
 }
 </style>
