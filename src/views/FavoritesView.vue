@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFavoriteStore } from '../stores/favoriteStore';
 import GenreFilter from '../components/GenreFilter.vue';
@@ -20,17 +20,21 @@ const removeFromFavorites = async (movieId) => {
   await favoriteStore.removeFromFavorites(movieId);
 };
 
-const handleGenreFilter = async (genreId) => {
+const filterByGenre = async (genreId) => {
   selectedGenreId.value = genreId;
   await favoriteStore.fetchFavorites(genreId ? { genre_id: genreId } : {});
 };
+
+const filteredFavorites = computed(() => {
+  return favoriteStore.favorites;
+});
 </script>
 
 <template>
   <div class="favorites-page">
     <h1>Meus Filmes Favoritos</h1>
     
-    <GenreFilter @filter="handleGenreFilter" />
+    <genre-filter @filter="filterByGenre" />
     
     <div v-if="favoriteStore.loading" class="loading">
       <p>Carregando favoritos...</p>
@@ -38,39 +42,40 @@ const handleGenreFilter = async (genreId) => {
     
     <div v-else-if="favoriteStore.error" class="error">
       <p>{{ favoriteStore.error }}</p>
-      <button @click="favoriteStore.fetchFavorites">Tentar novamente</button>
+      <button class="btn btn--primary" @click="favoriteStore.fetchFavorites">Tentar novamente</button>
     </div>
     
-    <div v-else-if="favoriteStore.favorites.length === 0" class="empty">
-      <p>Você ainda não adicionou nenhum filme aos favoritos.</p>
-      <button @click="router.push('/')" class="action-btn">Explorar filmes populares</button>
+    <div v-else-if="filteredFavorites.length === 0" class="empty">
+      <p v-if="favoriteStore.favorites.length === 0">Você ainda não adicionou nenhum filme aos favoritos.</p>
+      <p v-else>Nenhum filme favorito encontrado para o gênero selecionado.</p>
     </div>
     
-    <div v-else class="movie-grid">
-      <div v-for="movie in favoriteStore.favorites" :key="movie.tmdb_id" class="movie-card">
-        <div class="poster" @click="viewMovieDetails(movie.tmdb_id)">
+    <div v-else class="grid">
+      <div v-for="movie in filteredFavorites" :key="movie.id" class="movie-card">
+        <div class="movie-card__poster" @click="viewMovieDetails(movie.tmdb_id)">
           <img 
             v-if="movie.poster_path" 
             :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" 
             :alt="movie.title"
+            class="movie-card__poster-img"
           />
-          <div v-else class="no-poster">Sem imagem</div>
+          <div v-else class="movie-card__no-poster">Sem imagem</div>
         </div>
         
-        <div class="movie-info">
-          <h3 @click="viewMovieDetails(movie.tmdb_id)">{{ movie.title }}</h3>
-          <div class="movie-meta">
-            <span class="year" v-if="movie.release_date">
+        <div class="movie-card__info">
+          <h3 @click="viewMovieDetails(movie.tmdb_id)" class="movie-card__title">{{ movie.title }}</h3>
+          <div class="movie-card__meta">
+            <span v-if="movie.release_date">
               {{ new Date(movie.release_date).getFullYear() }}
             </span>
-            <span class="rating" v-if="movie.vote_average">
-              ⭐ {{ parseFloat(movie.vote_average).toFixed(1) }}
+            <span v-if="movie.vote_average">
+              ⭐ {{ movie.vote_average.toFixed(1) }}
             </span>
           </div>
           
           <button 
-            class="remove-btn"
-            @click="removeFromFavorites(movie.tmdb_id)"
+            class="btn btn--secondary btn--full" 
+            @click="favoriteStore.removeFromFavorites(movie.tmdb_id)"
           >
             ❌ Remover dos favoritos
           </button>
@@ -82,112 +87,56 @@ const handleGenreFilter = async (genreId) => {
 
 <style scoped>
 .favorites-page {
-  padding: 20px;
+  padding: var(--spacing-md);
 }
 
 h1 {
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-xl);
   text-align: center;
-  color: #e2e8f0;
+  color: var(--color-text);
 }
 
-.loading, .error, .empty {
-  text-align: center;
-  padding: 40px 0;
+/* Nota: Os estilos para movie-card e seus elementos foram movidos para components.css */
+/* Aqui mantemos apenas estilos específicos desta página */
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  .favorites-page {
+    padding: var(--spacing-sm);
+  }
+  
+  h1 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .movie-card__title {
+    font-size: var(--font-size-md);
+  }
+  
+  .movie-card__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .btn--secondary {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
+  }
 }
 
-.action-btn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.action-btn:hover {
-  background-color: #2563eb;
-}
-
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.movie-card {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
-}
-
-.poster {
-  height: 375px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.poster img:hover {
-  transform: scale(1.05);
-}
-
-.no-poster {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #2d3748;
-  color: #a0aec0;
-}
-
-.movie-info {
-  padding: 15px;
-}
-
-.movie-info h3 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: #e2e8f0;
-}
-
-.movie-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  color: #a0aec0;
-}
-
-.remove-btn {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  background-color: #e53e3e;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 0.9rem;
-}
-
-.remove-btn:hover {
-  background-color: #c53030;
+@media (max-width: 480px) {
+  h1 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .grid {
+    gap: var(--spacing-md);
+  }
+  
+  .movie-card__poster {
+    height: 300px;
+  }
 }
 </style>

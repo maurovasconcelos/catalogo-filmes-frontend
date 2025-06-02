@@ -43,30 +43,31 @@ const toggleFavorite = async (movie) => {
       <p>Nenhum filme encontrado.</p>
     </div>
     
-    <div v-else class="movie-grid">
+    <div v-else class="grid">
       <div v-for="movie in movieStore.popularMovies" :key="movie.id" class="movie-card">
-        <div class="poster" @click="viewMovieDetails(movie.id)">
+        <div class="movie-card__poster" @click="viewMovieDetails(movie.id)">
           <img 
             v-if="movie.poster_path" 
             :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" 
             :alt="movie.title"
+            class="movie-card__poster-img"
           />
-          <div v-else class="no-poster">Sem imagem</div>
+          <div v-else class="movie-card__no-poster">Sem imagem</div>
         </div>
         
-        <div class="movie-info">
-          <h3 @click="viewMovieDetails(movie.id)">{{ movie.title }}</h3>
-          <div class="movie-meta">
-            <span class="year" v-if="movie.release_date">
+        <div class="movie-card__info">
+          <h3 @click="viewMovieDetails(movie.id)" class="movie-card__title">{{ movie.title }}</h3>
+          <div class="movie-card__meta">
+            <span v-if="movie.release_date">
               {{ new Date(movie.release_date).getFullYear() }}
             </span>
-            <span class="rating" v-if="movie.vote_average">
+            <span v-if="movie.vote_average">
               ⭐ {{ movie.vote_average.toFixed(1) }}
             </span>
           </div>
           
           <button 
-            class="favorite-btn" 
+            class="btn btn--favorite" 
             :class="{ 'is-favorite': favoriteStore.isFavorite(movie.id) }"
             @click="toggleFavorite(movie)"
           >
@@ -80,103 +81,59 @@ const toggleFavorite = async (movie) => {
 
 <style scoped>
 .home {
-  padding: 20px;
+  padding: var(--spacing-md);
 }
 
 h1 {
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-xl);
   text-align: center;
-  color: #e2e8f0;
+  color: var(--color-text);
 }
 
+/* Utilizando as classes de status do components.css */
 .loading, .error, .empty {
   text-align: center;
-  padding: 40px 0;
+  padding: calc(var(--spacing-xl) * 2) 0;
 }
 
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  .home {
+    padding: var(--spacing-sm);
+  }
+  
+  h1 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .movie-card__title {
+    font-size: var(--font-size-md);
+  }
+  
+  .movie-card__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .btn--favorite {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
+  }
 }
 
-.movie-card {
-  background: #1e1e1e;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
-}
-
-.poster {
-  height: 375px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.poster img:hover {
-  transform: scale(1.05);
-}
-
-.no-poster {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #2d3748;
-  color: #a0aec0;
-}
-
-.movie-info {
-  padding: 15px;
-}
-
-.movie-info h3 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: #e2e8f0;
-}
-
-.movie-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  color: #a0aec0;
-}
-
-.favorite-btn {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  background-color: #2d3748;
-  color: #e2e8f0;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.favorite-btn:hover {
-  background-color: #4a5568;
-}
-
-.favorite-btn.is-favorite {
-  background-color: #3b82f6;
-}
-
-.favorite-btn.is-favorite:hover {
-  background-color: #2563eb;
+@media (max-width: 480px) {
+  h1 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .grid {
+    gap: var(--spacing-md);
+  }
+  
+  .movie-card__poster {
+    height: 300px;
+  }
 }
 </style>

@@ -71,65 +71,65 @@ const getTrailerUrl = () => {
     
     <div v-else-if="movieStore.error" class="error">
       <p>{{ movieStore.error }}</p>
-      <button @click="movieStore.fetchMovieDetails(movieId)" class="retry-btn">Tentar novamente</button>
+      <button @click="movieStore.fetchMovieDetails(movieId)" class="btn btn--primary">Tentar novamente</button>
     </div>
     
     <div v-else-if="!movieStore.movieDetails" class="error">
       <p>Filme não encontrado.</p>
-      <button @click="$router.push('/')" class="back-btn">Voltar para a página inicial</button>
+      <button @click="$router.push('/')" class="btn btn--primary">Voltar para a página inicial</button>
     </div>
     
     <template v-else>
       <div 
-        class="backdrop" 
+        class="movie-details__backdrop" 
         :style="movieStore.movieDetails.backdrop_path ? 
           `background-image: url(https://image.tmdb.org/t/p/original${movieStore.movieDetails.backdrop_path})` : ''"
       >
-        <div class="backdrop-overlay">
+        <div class="movie-details__backdrop-overlay">
           <div class="container">
-            <div class="movie-header">
-              <div class="poster-container">
+            <div class="movie-details__header">
+              <div class="movie-details__poster-container">
                 <img 
                   v-if="movieStore.movieDetails.poster_path" 
                   :src="`https://image.tmdb.org/t/p/w500${movieStore.movieDetails.poster_path}`" 
                   :alt="movieStore.movieDetails.title"
-                  class="poster"
+                  class="movie-details__poster"
                 />
-                <div v-else class="no-poster">Sem imagem</div>
+                <div v-else class="movie-details__no-poster">Sem imagem</div>
               </div>
               
-              <div class="movie-header-info">
-                <h1>{{ movieStore.movieDetails.title }}</h1>
+              <div class="movie-details__info">
+                <h1 class="movie-details__title">{{ movieStore.movieDetails.title }}</h1>
                 
-                <div v-if="movieStore.movieDetails.release_date" class="release-date">
+                <div v-if="movieStore.movieDetails.release_date" class="movie-details__release-date">
                   {{ formatDate(movieStore.movieDetails.release_date) }}
                 </div>
                 
-                <div class="genres">
+                <div class="movie-details__genres">
                   <span 
                     v-for="genre in movieStore.movieDetails.genres" 
                     :key="genre.id"
-                    class="genre-tag"
+                    class="movie-details__genre-tag"
                   >
                     {{ genre.name }}
                   </span>
                 </div>
                 
-                <div class="meta-info">
-                  <div class="rating" v-if="movieStore.movieDetails.vote_average">
-                    <span class="rating-value">⭐ {{ movieStore.movieDetails.vote_average.toFixed(1) }}</span>
-                    <span class="rating-count">({{ movieStore.movieDetails.vote_count }} votos)</span>
+                <div class="movie-details__meta">
+                  <div class="movie-details__rating" v-if="movieStore.movieDetails.vote_average">
+                    <span class="movie-details__rating-value">⭐ {{ movieStore.movieDetails.vote_average.toFixed(1) }}</span>
+                    <span class="movie-details__rating-count">({{ movieStore.movieDetails.vote_count }} votos)</span>
                   </div>
                   
-                  <div class="runtime" v-if="movieStore.movieDetails.runtime">
+                  <div class="movie-details__runtime" v-if="movieStore.movieDetails.runtime">
                     🕒 {{ formatRuntime(movieStore.movieDetails.runtime) }}
                   </div>
                 </div>
                 
-                <div class="actions">
+                <div class="movie-details__actions">
                   <button 
-                    class="favorite-btn" 
-                    :class="{ 'is-favorite': favoriteStore.isFavorite(movieStore.movieDetails.id) }"
+                    class="btn" 
+                    :class="favoriteStore.isFavorite(movieStore.movieDetails.id) ? 'btn--favorite btn--active' : 'btn--favorite'"
                     @click="toggleFavorite"
                   >
                     {{ favoriteStore.isFavorite(movieStore.movieDetails.id) ? 
@@ -142,22 +142,25 @@ const getTrailerUrl = () => {
         </div>
       </div>
       
-      <div class="container content-section">
-        <div class="tabs">
+      <div class="container movie-details__content-section">
+        <div class="movie-details__tabs">
           <button 
-            :class="{ active: activeTab === 'overview' }" 
+            class="movie-details__tab-btn"
+            :class="{ 'movie-details__tab-btn--active': activeTab === 'overview' }" 
             @click="activeTab = 'overview'"
           >
             Visão Geral
           </button>
           <button 
-            :class="{ active: activeTab === 'cast' }" 
+            class="movie-details__tab-btn"
+            :class="{ 'movie-details__tab-btn--active': activeTab === 'cast' }" 
             @click="activeTab = 'cast'"
           >
             Elenco
           </button>
           <button 
-            :class="{ active: activeTab === 'videos' }" 
+            class="movie-details__tab-btn"
+            :class="{ 'movie-details__tab-btn--active': activeTab === 'videos' }" 
             @click="activeTab = 'videos'"
             v-if="getTrailerUrl()"
           >
@@ -165,77 +168,79 @@ const getTrailerUrl = () => {
           </button>
         </div>
         
-        <div class="tab-content">
-          <div v-if="activeTab === 'overview'" class="overview-tab">
+        <div class="movie-details__tab-content">
+          <div v-if="activeTab === 'overview'" class="movie-details__overview">
             <h2>Sinopse</h2>
             <p v-if="movieStore.movieDetails.overview">
               {{ movieStore.movieDetails.overview }}
             </p>
-            <p v-else class="no-data">Sinopse não disponível.</p>
+            <p v-else class="movie-details__no-data">Sinopse não disponível.</p>
             
-            <div class="additional-info">
-              <div class="info-item">
+            <div class="movie-details__additional-info">
+              <div class="movie-details__info-item">
                 <h3>Orçamento</h3>
                 <p>{{ formatCurrency(movieStore.movieDetails.budget) }}</p>
               </div>
               
-              <div class="info-item">
+              <div class="movie-details__info-item">
                 <h3>Receita</h3>
                 <p>{{ formatCurrency(movieStore.movieDetails.revenue) }}</p>
               </div>
               
-              <div class="info-item">
+              <div class="movie-details__info-item">
                 <h3>Idioma Original</h3>
                 <p>{{ movieStore.movieDetails.original_language?.toUpperCase() || 'N/A' }}</p>
               </div>
               
-              <div class="info-item">
+              <div class="movie-details__info-item">
                 <h3>Status</h3>
                 <p>{{ movieStore.movieDetails.status || 'N/A' }}</p>
               </div>
             </div>
           </div>
           
-          <div v-else-if="activeTab === 'cast'" class="cast-tab">
+          <div v-else-if="activeTab === 'cast'" class="movie-details__cast">
             <h2>Elenco Principal</h2>
             
-            <div v-if="movieStore.movieDetails.credits?.cast?.length" class="cast-grid">
+            <div v-if="movieStore.movieDetails.credits?.cast?.length" class="movie-details__cast-grid">
               <div 
                 v-for="actor in movieStore.movieDetails.credits.cast.slice(0, 10)" 
                 :key="actor.id"
-                class="cast-card"
+                class="movie-details__cast-card"
               >
-                <div class="cast-image">
+                <div class="movie-details__cast-image">
                   <img 
                     v-if="actor.profile_path" 
                     :src="`https://image.tmdb.org/t/p/w200${actor.profile_path}`" 
                     :alt="actor.name"
+                    class="movie-details__cast-photo"
                   />
-                  <div v-else class="no-image">Sem foto</div>
+                  <div v-else class="movie-details__no-photo">Sem foto</div>
                 </div>
-                <div class="cast-info">
-                  <h4>{{ actor.name }}</h4>
-                  <p>{{ actor.character }}</p>
+                <div class="movie-details__cast-info">
+                  <h4 class="movie-details__cast-name">{{ actor.name }}</h4>
+                  <p class="movie-details__cast-character">{{ actor.character }}</p>
                 </div>
               </div>
             </div>
             
-            <p v-else class="no-data">Informações do elenco não disponíveis.</p>
+            <p v-else class="movie-details__no-data">Informações do elenco não disponíveis.</p>
           </div>
           
-          <div v-else-if="activeTab === 'videos'" class="videos-tab">
+          <div v-else-if="activeTab === 'videos'" class="movie-details__videos">
             <h2>Trailer</h2>
             
-            <div v-if="getTrailerUrl()" class="trailer-container">
+            <div v-if="getTrailerUrl()" class="movie-details__trailer-container">
               <iframe 
                 :src="getTrailerUrl()" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen
+                class="movie-details__trailer-frame"
               ></iframe>
             </div>
             
-            <p v-else class="no-data">Trailer não disponível.</p>
+            <p v-else class="movie-details__no-data">Trailer não disponível.</p>
           </div>
         </div>
       </div>
@@ -245,300 +250,253 @@ const getTrailerUrl = () => {
 
 <style scoped>
 .movie-details {
-  padding-bottom: 40px;
+  padding-bottom: var(--spacing-xl);
 }
 
 .loading, .error {
   text-align: center;
-  padding: 60px 0;
+  padding: var(--spacing-xxl) 0;
 }
 
-.retry-btn, .back-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.retry-btn:hover, .back-btn:hover {
-  background-color: #2563eb;
-}
-
-.backdrop {
+.movie-details__backdrop {
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-.backdrop-overlay {
+.movie-details__backdrop-overlay {
   background: rgba(0, 0, 0, 0.7);
-  padding: 40px 0;
+  padding: var(--spacing-xl) 0;
 }
 
-.movie-header {
+.movie-details__header {
   display: flex;
-  gap: 30px;
+  gap: var(--spacing-lg);
 }
 
-.poster-container {
+.movie-details__poster-container {
   flex: 0 0 300px;
 }
 
-.poster {
+.movie-details__poster {
   width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
 }
 
-.no-poster {
+.movie-details__no-poster {
   width: 100%;
   height: 450px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #2d3748;
-  color: #a0aec0;
-  border-radius: 8px;
+  background: var(--color-background-elevated);
+  color: var(--color-text-muted);
+  border-radius: var(--border-radius-md);
 }
 
-.movie-header-info {
+.movie-details__info {
   flex: 1;
-  color: white;
+  color: var(--color-text);
 }
 
-.movie-header-info h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+.movie-details__title {
+  font-size: var(--font-size-xxl);
+  margin-bottom: var(--spacing-xs);
 }
 
-.release-date {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  color: #a0aec0;
+.movie-details__release-date {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-muted);
 }
 
-.genres {
+.movie-details__genres {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
 }
 
-.genre-tag {
+.movie-details__genre-tag {
   background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  color: var(--color-primary-light);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-sm);
 }
 
-.meta-info {
+.movie-details__meta {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  font-size: 1.1rem;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-md);
 }
 
-.rating-value {
-  color: #fbbf24;
+.movie-details__rating-value {
+  color: var(--color-accent);
 }
 
-.rating-count {
-  color: #a0aec0;
-  font-size: 0.9rem;
+.movie-details__rating-count {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 
-.actions {
-  margin-top: 20px;
+.movie-details__actions {
+  margin-top: var(--spacing-md);
 }
 
-.favorite-btn {
-  padding: 10px 20px;
-  background-color: #2d3748;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
+.movie-details__content-section {
+  margin-top: var(--spacing-lg);
 }
 
-.favorite-btn:hover {
-  background-color: #4a5568;
-}
-
-.favorite-btn.is-favorite {
-  background-color: #3b82f6;
-}
-
-.favorite-btn.is-favorite:hover {
-  background-color: #2563eb;
-}
-
-.content-section {
-  margin-top: 30px;
-}
-
-.tabs {
+.movie-details__tabs {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #4a5568;
-  padding-bottom: 10px;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
 }
 
-.tabs button {
+.movie-details__tab-btn {
   background: none;
   border: none;
-  color: #a0aec0;
-  font-size: 1rem;
-  padding: 8px 16px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
   cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-normal);
 }
 
-.tabs button:hover {
-  background-color: #2d3748;
-  color: #e2e8f0;
+.movie-details__tab-btn:hover {
+  background-color: var(--color-background-elevated);
+  color: var(--color-text);
 }
 
-.tabs button.active {
-  background-color: #3b82f6;
-  color: white;
+.movie-details__tab-btn--active {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
 }
 
-.tab-content {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.movie-details__tab-content {
+  background-color: var(--color-background-elevated);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
 }
 
-.overview {
+.movie-details__overview {
   line-height: 1.7;
-  color: #e2e8f0;
+  color: var(--color-text);
 }
 
-.tagline {
-  font-style: italic;
-  color: #a0aec0;
-  margin-bottom: 20px;
-}
-
-.info-grid {
+.movie-details__additional-info {
+  margin-top: var(--spacing-lg);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: var(--spacing-md);
 }
 
-.info-item {
-  margin-bottom: 15px;
+.movie-details__info-item {
+  margin-bottom: var(--spacing-sm);
 }
 
-.info-label {
+.movie-details__info-item h3 {
   font-weight: bold;
-  color: #a0aec0;
-  margin-bottom: 5px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-xs);
 }
 
-.info-value {
-  color: #e2e8f0;
+.movie-details__trailer-container {
+  margin-top: var(--spacing-md);
 }
 
-.trailer-container {
-  margin-top: 20px;
-}
-
-.trailer-frame {
+.movie-details__trailer-frame {
   width: 100%;
   aspect-ratio: 16/9;
   border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
 }
 
-.no-trailer {
-  text-align: center;
-  padding: 40px;
-  background-color: #2d3748;
-  border-radius: 8px;
-  color: #a0aec0;
-}
-
-.cast-grid {
+.movie-details__cast-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
+  gap: var(--spacing-md);
 }
 
-.cast-card {
-  background-color: #2d3748;
-  border-radius: 8px;
+.movie-details__cast-card {
+  background-color: var(--color-background-elevated);
+  border-radius: var(--border-radius-md);
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sm);
 }
 
-.cast-photo {
+.movie-details__cast-photo {
   width: 100%;
   aspect-ratio: 2/3;
   object-fit: cover;
 }
 
-.no-photo {
+.movie-details__no-photo {
   width: 100%;
   aspect-ratio: 2/3;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #4a5568;
-  color: #a0aec0;
+  background-color: var(--color-background-elevated);
+  color: var(--color-text-muted);
 }
 
-.cast-info {
-  padding: 10px;
+.movie-details__cast-info {
+  padding: var(--spacing-sm);
 }
 
-.cast-name {
+.movie-details__cast-name {
   font-weight: bold;
-  margin-bottom: 5px;
-  color: #e2e8f0;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text);
 }
 
-.cast-character {
-  font-size: 0.9rem;
-  color: #a0aec0;
+.movie-details__cast-character {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.movie-details__no-data {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--spacing-md);
 }
 
 @media (max-width: 768px) {
-  .movie-header {
+  .movie-details__header {
     flex-direction: column;
   }
   
-  .poster-container {
+  .movie-details__poster-container {
     flex: 0 0 auto;
     max-width: 250px;
     margin: 0 auto;
   }
   
-  .movie-header-info h1 {
-    font-size: 2rem;
+  .movie-details__title {
+    font-size: var(--font-size-xl);
     text-align: center;
   }
   
-  .release-date, .genres {
+  .movie-details__release-date, 
+  .movie-details__genres {
     text-align: center;
     justify-content: center;
   }
   
-  .meta-info {
+  .movie-details__meta {
     justify-content: center;
   }
   
-  .actions {
+  .movie-details__actions {
     display: flex;
     justify-content: center;
   }

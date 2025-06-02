@@ -34,12 +34,12 @@ const filterByGenre = () => {
 
 <template>
   <div class="genre-filter">
-    <label for="genre-select">Filtrar por gênero:</label>
+    <label for="genre-select" class="form-label">Filtrar por gênero:</label>
     <select 
       id="genre-select"
       v-model="selectedGenre" 
       @change="filterByGenre"
-      class="genre-select"
+      class="select"
     >
       <option value="">Todos os gêneros</option>
       <option v-for="genre in genres" :key="genre.id" :value="genre.id">
@@ -51,38 +51,43 @@ const filterByGenre = () => {
 
 <style scoped>
 .genre-filter {
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-label {
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  color: #e2e8f0;
-}
-
-.genre-select {
-  width: 100%;
+.select {
   max-width: 300px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #4a5568;
-  background-color: #2d3748;
-  color: #e2e8f0;
-  font-size: 1rem;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0aec0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
+  width: 100%;
 }
 
-.genre-select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  .genre-filter {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .select {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .form-label {
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .genre-filter {
+    margin-bottom: var(--spacing-md);
+    width: 100%;
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .form-label {
+    font-size: var(--font-size-sm);
+  }
 }
 </style>
