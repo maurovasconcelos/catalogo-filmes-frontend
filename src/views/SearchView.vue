@@ -11,7 +11,7 @@ const favoriteStore = useFavoriteStore();
 const searchQuery = ref('');
 const debouncedSearchTimeout = ref(null);
 
-const performSearch = () => {
+const performSearch = (page = 1) => {
   clearTimeout(debouncedSearchTimeout.value);
   
   if (searchQuery.value.trim() === '') {
@@ -20,13 +20,13 @@ const performSearch = () => {
   }
   
   debouncedSearchTimeout.value = setTimeout(async () => {
-    await movieStore.searchMovies(searchQuery.value);
-  }, 500); // Espera 500ms após  digitar
+    await movieStore.searchMovies(searchQuery.value, page);
+  }, 500); // Espera 500ms após digitar
 };
 
 // Observa mudança no campo de busca
 watch(searchQuery, () => {
-  performSearch();
+  performSearch(1); // Volta para a primeira página quando a busca muda
 });
 
 const viewMovieDetails = (movieId) => {
@@ -39,6 +39,12 @@ const toggleFavorite = async (movie) => {
   } else {
     await favoriteStore.addToFavorites(movie);
   }
+};
+
+const goToPage = (page) => {
+  if (page < 1 || page > movieStore.totalPages) return;
+  performSearch(page);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 </script>
 
@@ -62,7 +68,7 @@ const toggleFavorite = async (movie) => {
     
     <div v-else-if="movieStore.error" class="error">
       <p>{{ movieStore.error }}</p>
-      <button @click="performSearch">Tentar novamente</button>
+      <button @click="performSearch(1)">Tentar novamente</button>
     </div>
     
     <div v-else-if="searchQuery && movieStore.searchResults.length === 0" class="empty">
@@ -73,34 +79,62 @@ const toggleFavorite = async (movie) => {
       <p>Digite um termo de busca para encontrar filmes.</p>
     </div>
     
-    <div v-else class="movie-grid">
-      <div v-for="movie in movieStore.searchResults" :key="movie.id" class="movie-card">
-        <div class="poster" @click="viewMovieDetails(movie.id)">
-          <img 
-            v-if="movie.poster_path" 
-            :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" 
-            :alt="movie.title"
-          />
-          <div v-else class="no-poster">Sem imagem</div>
-        </div>
-        
-        <div class="movie-info">
-          <h3 @click="viewMovieDetails(movie.id)">{{ movie.title }}</h3>
-          <div class="movie-meta">
-            <span class="year" v-if="movie.release_date">
-              {{ new Date(movie.release_date).getFullYear() }}
-            </span>
-            <span class="rating" v-if="movie.vote_average">
-              ⭐ {{ movie.vote_average.toFixed(1) }}
-            </span>
+    <div v-else>
+      <div class="movie-grid">
+        <div v-for="movie in movieStore.searchResults" :key="movie.id" class="movie-card">
+          <div class="poster" @click="viewMovieDetails(movie.id)">
+            <img 
+              v-if="movie.poster_path" 
+              :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" 
+              :alt="movie.title"
+              loading="lazy"
+            />
+            <div v-else class="no-poster">Sem imagem</div>
           </div>
           
+          <div class="movie-info">
+            <h3 @click="viewMovieDetails(movie.id)">{{ movie.title }}</h3>
+            <div class="movie-meta">
+              <span class="year" v-if="movie.release_date">
+                {{ new Date(movie.release_date).getFullYear() }}
+              </span>
+              <span class="rating" v-if="movie.vote_average">
+                ⭐ {{ movie.vote_average.toFixed(1) }}
+              </span>
+            </div>
+            
+            <button 
+              class="favorite-btn" 
+              :class="{ 'is-favorite': favoriteStore.isFavorite(movie.id) }"
+              @click="toggleFavorite(movie)"
+            >
+              {{ favoriteStore.isFavorite(movie.id) ? '❤️ Remover dos favoritos' : '🤍 Adicionar aos favoritos' }}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Paginação -->
+      <div v-if="movieStore.totalPages > 1" class="pagination">
+        <div class="pagination-info">
+          <span>Página {{ movieStore.currentPage }} de {{ movieStore.totalPages }}</span>
+          <span>Total: {{ movieStore.totalResults }} filmes</span>
+        </div>
+        <div class="pagination-controls">
           <button 
-            class="favorite-btn" 
-            :class="{ 'is-favorite': favoriteStore.isFavorite(movie.id) }"
-            @click="toggleFavorite(movie)"
+            @click="goToPage(movieStore.currentPage - 1)" 
+            :disabled="movieStore.currentPage <= 1"
+            class="pagination-btn"
           >
-            {{ favoriteStore.isFavorite(movie.id) ? '❤️ Remover dos favoritos' : '🤍 Adicionar aos favoritos' }}
+            &laquo; Anterior
+          </button>
+          
+          <button 
+            @click="goToPage(movieStore.currentPage + 1)" 
+            :disabled="movieStore.currentPage >= movieStore.totalPages"
+            class="pagination-btn"
+          >
+            Próxima &raquo;
           </button>
         </div>
       </div>
@@ -147,6 +181,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
+  margin-bottom: 30px;
 }
 
 .movie-card {
@@ -230,5 +265,45 @@ h1 {
 
 .favorite-btn.is-favorite:hover {
   background: #ff5252;
+}
+
+/* Estilos para paginação */
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.pagination-info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: #666;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #0055aa;
+}
+
+.pagination-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 </style>
