@@ -27,7 +27,8 @@ const genres = ref([
 ]);
 
 const filterByGenre = () => {
-  emit('filter', selectedGenre.value);
+  const genreId = selectedGenre.value === '' ? '' : Number(selectedGenre.value);
+  emit('filter', genreId);
 };
 </script>
 

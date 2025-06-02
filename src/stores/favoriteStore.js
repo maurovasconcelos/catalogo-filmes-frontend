@@ -14,9 +14,15 @@ export const useFavoriteStore = defineStore('favorite', {
       this.error = null
 
       try {
+        const queryParams = { ...params }
+
+        if (queryParams.genre_id && Array.isArray(queryParams.genre_id)) {
+          queryParams.genre_id = queryParams.genre_id.join(',')
+        }
+
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/favorites`,
-          { params }
+          { params: queryParams }
         )
         this.favorites = response.data
       } catch (error) {
@@ -32,15 +38,11 @@ export const useFavoriteStore = defineStore('favorite', {
       this.error = null
 
       try {
-        
         let genreIds = []
-
 
         if (movie.genres && Array.isArray(movie.genres)) {
           genreIds = movie.genres.map(genre => genre.id)
-        }
-
-        else if (movie.genre_ids && Array.isArray(movie.genre_ids)) {
+        } else if (movie.genre_ids && Array.isArray(movie.genre_ids)) {
           genreIds = movie.genre_ids
         }
 

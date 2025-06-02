@@ -99,27 +99,27 @@ h1 {
 .action-btn {
   margin-top: 15px;
   padding: 10px 20px;
-  background: #0066cc;
+  background-color: #0066cc;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.2s ease;
 }
 
 .action-btn:hover {
-  background: #0055aa;
+  background-color: #0052a3;
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
+  margin-top: 30px;
 }
 
 .movie-card {
-  background: #fff;
+  background-color: white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -152,8 +152,9 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #999;
+  background-color: #f0f0f0;
+  color: #666;
+  font-style: italic;
 }
 
 .movie-info {
@@ -162,7 +163,7 @@ h1 {
 
 .movie-info h3 {
   margin: 0 0 10px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
@@ -174,22 +175,23 @@ h1 {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  font-size: 0.9rem;
   color: #666;
+  font-size: 0.9rem;
 }
 
 .remove-btn {
   width: 100%;
   padding: 8px;
+  background-color: #f44336;
+  color: white;
   border: none;
   border-radius: 4px;
-  background: #ff6b6b;
-  color: white;
   cursor: pointer;
-  transition: background 0.2s ease;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
 }
 
 .remove-btn:hover {
-  background: #ff5252;
+  background-color: #d32f2f;
 }
 </style>
