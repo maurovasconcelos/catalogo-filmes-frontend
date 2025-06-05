@@ -9,142 +9,42 @@ const toggleMobileMenu = () => {
 </script>
 
 <template>
-    <header>
+    <header class="bg-gray-800 text-white py-4">
         <nav>
-            <div class="container">
-                <h1>Catálogo de Filmes</h1>
-                <button class="mobile-menu-toggle" @click="toggleMobileMenu" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+            <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+                <h1 class="text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Catálogo de Filmes</h1>
+                
+                <button class="flex flex-col justify-between w-[30px] h-[21px] bg-transparent border-none cursor-pointer p-0 z-10 md:hidden" @click="toggleMobileMenu" aria-label="Menu">
+                    <span class="block w-full h-0.5 bg-white"></span>
+                    <span class="block w-full h-0.5 bg-white"></span>
+                    <span class="block w-full h-0.5 bg-white"></span>
                 </button>
-                <div class="nav-links" :class="{ 'nav-links--open': mobileMenuOpen }">
-                    <router-link to="/" @click="mobileMenuOpen = false">Home</router-link>
-                    <router-link to="/search" @click="mobileMenuOpen = false">Buscar</router-link>
-                    <router-link to="/favorites" @click="mobileMenuOpen = false">Favoritos</router-link>
+                
+                <div class="hidden md:flex gap-6">
+                    <router-link to="/" class="text-white no-underline px-3 py-2 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:shadow-lg" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg': $route.path === '/' }">Home</router-link>
+                    <router-link to="/search" class="text-white no-underline px-3 py-2 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:shadow-lg" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg': $route.path.startsWith('/search') }">Buscar</router-link>
+                    <router-link to="/favorites" class="text-white no-underline px-3 py-2 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:shadow-lg" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg': $route.path.startsWith('/favorites') }">Favoritos</router-link>
+                </div>
+                
+                <div class="md:hidden fixed inset-0 bg-gray-800 bg-opacity-95 z-50 flex flex-col items-center justify-center gap-8" v-if="mobileMenuOpen">
+                    <router-link to="/" @click="mobileMenuOpen = false" class="text-white text-xl no-underline px-5 py-3 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500': $route.path === '/' }">Home</router-link>
+                    <router-link to="/search" @click="mobileMenuOpen = false" class="text-white text-xl no-underline px-5 py-3 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500': $route.path.startsWith('/search') }">Buscar</router-link>
+                    <router-link to="/favorites" @click="mobileMenuOpen = false" class="text-white text-xl no-underline px-5 py-3 rounded-md transition-colors hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500" :class="{ 'bg-gradient-to-r from-purple-500 to-pink-500': $route.path.startsWith('/favorites') }">Favoritos</router-link>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="container">
+    <main class="max-w-7xl mx-auto px-4">
         <router-view />
     </main>
 
-    <footer>
-        <div class="container">
+    <footer class="bg-gray-800 text-white py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4">
             <p>Catálogo de Filmes - Desenvolvido com Laravel e Vue.js</p>
         </div>
     </footer>
 </template>
 
 <style>
-/* Utilizando as variáveis CSS do design system */
-.container {
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-}
-
-header {
-    background-color: var(--color-background-header);
-    color: var(--color-text);
-    padding: var(--spacing-md) 0;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: relative;
-}
-
-.nav-links {
-    display: flex;
-    gap: var(--spacing-lg);
-}
-
-.nav-links a {
-    color: var(--color-text);
-    text-decoration: none;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    transition: background-color var(--transition-normal), color var(--transition-normal);
-}
-
-.nav-links a:hover,
-.nav-links a.router-link-active {
-    background-color: var(--color-background-hover);
-}
-
-.mobile-menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-}
-
-.mobile-menu-toggle span {
-    width: 100%;
-    height: 3px;
-    background-color: var(--color-text);
-    border-radius: 3px;
-    transition: all var(--transition-normal);
-}
-
-@media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        max-width: 300px;
-        height: 100vh;
-        background-color: var(--color-background-header);
-        flex-direction: column;
-        padding: 80px var(--spacing-lg) var(--spacing-lg);
-        transition: right var(--transition-normal);
-        z-index: 5;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .nav-links--open {
-        right: 0;
-    }
-    
-    .nav-links a {
-        padding: var(--spacing-md);
-        width: 100%;
-        text-align: center;
-    }
-}
-
-main {
-    min-height: calc(100vh - 180px);
-    padding: var(--spacing-xl) 0;
-}
-
-footer {
-    background-color: var(--color-background-header);
-    color: var(--color-text);
-    text-align: center;
-    padding: var(--spacing-md) 0;
-}
 </style>
